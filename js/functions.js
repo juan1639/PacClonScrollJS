@@ -59,6 +59,23 @@ function dibujaTodosPuntitos() {
 }
 
 // --------------------------------------------------------------------------
+function escalar_objetos(x, y) {
+
+    let ofx;
+    let ofy;
+
+    if (settings.objeto.pacman) {
+        ofx = x - settings.objeto.pacman.x;
+        ofy = y - settings.objeto.pacman.y;
+
+        return [settings.objeto.pacman.escalaXY[0] + ofx, settings.objeto.pacman.escalaXY[1] + ofy];
+
+    }
+
+    return [0, 0];
+}
+
+// --------------------------------------------------------------------------
 function checkColision(obj1, obj2, corr) {
     return obj1.x + corr < obj2.x + obj2.ancho - corr && 
             obj1.x + obj1.ancho - corr > obj2.x + corr &&
@@ -116,22 +133,21 @@ function elNivelSuperado() {
 function mostrarMarcadores() {
     if (estado.actual == 0) {
 
-        const gradi = ctx.createLinearGradient(parseInt(resolucion[0] / 5) + 5, 
-            parseInt(resolucion[1] / 4), parseInt(resolucion[0] / 5) + 5, parseInt(resolucion[1] / 1.5));
+        const gradi = ctx.createLinearGradient(Math.floor(resolucion[0] / 5) + Math.floor(resolucion[1] / 4), parseInt(resolucion[0] / 5) + 5, Math.floor(resolucion[1] / 1.5));
         gradi.addColorStop(0, 'orangered');
         gradi.addColorStop(1, 'yellow');
 
         ctx.font = '100px seriff';
         ctx.fillStyle = gradi;
-        ctx.fillText('Preparado!', parseInt(resolucion[0] / 5) + 5, 
-            parseInt(resolucion[1] / 2));
+        ctx.fillText('Preparado!', Math.floor(resolucion[0] / 5) + 5, 
+            Math.floor(resolucion[1] / 2));
     }
 
     if (estado.actual == 3) {
         ctx.font = '100px seriff';
         ctx.fillStyle = 'yellow';
-        ctx.fillText('Nivel Superado!', parseInt(resolucion[0] / 9) + 5, 
-            parseInt(resolucion[1] / 2));
+        ctx.fillText('Nivel Superado!', Math.floor(resolucion[0] / 9) + 5, 
+            Math.floor(resolucion[1] / 2));
     }
 
     objeto.fantasma.forEach(fant => {
@@ -185,6 +201,7 @@ function borraCanvas() {
 
 export {
     dibujaTodosPuntitos,
+    escalar_objetos,
     borraCanvas,
     playSonidos,
     playSonidosLoop

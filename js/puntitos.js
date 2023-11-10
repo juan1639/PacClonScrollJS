@@ -1,12 +1,16 @@
 import { settings } from './main.js';
+import { escalar_objetos } from './functions.js';
 
 // ============================================================================
 export class Puntitos {
 
     constructor(x, y) {
         
-        this.x = x * settings.constante.bsx + parseInt(settings.constante.bsx / 2);
-        this.y = y * settings.constante.bsy + parseInt(settings.constante.bsy / 2);
+        this.x = x * settings.constante.bsx + Math.floor(settings.constante.bsx / 2);
+        this.y = y * settings.constante.bsy + Math.floor(settings.constante.bsy / 2);
+        
+        this.left = x * settings.constante.bsx;
+        this.top = y * settings.constante.bsy;
 
         this.radio = 4;
         this.ancho = this.radio * 2;
@@ -16,12 +20,28 @@ export class Puntitos {
         this.visible = true;
         this.sumaPtos = 10;
 
-        this.dibuja();
+        //this.dibuja();
     }
 
     dibuja() {
+
+        let escalar = [];
+
         settings.ctx.beginPath();
-        settings.ctx.arc(this.x , this.y , this.radio, 0, Math.PI * 2);
+
+        if (settings.escala.x === 1 && settings.escala.y === 1) {
+
+            settings.ctx.arc(this.x , this.y , this.radio, 0, Math.PI * 2);
+
+        } else {
+
+            escalar = escalar_objetos(this.left, this.top);
+            escalar[0] += Math.floor(settings.constante.bsx / 2);
+            escalar[1] += Math.floor(settings.constante.bsy / 2);
+
+            settings.ctx.arc(escalar[0], escalar[1], this.radio, 0, Math.PI * 2);
+        }
+
         settings.ctx.fillStyle = this.color;
         settings.ctx.fill();
         settings.ctx.closePath();
@@ -31,8 +51,8 @@ export class Puntitos {
 // ============================================================================
 export class PtosGordos {   
     constructor(x, y) {
-        this.x = x * settings.constante.bsx + parseInt(settings.constante.bsx / 2);
-        this.y = y * settings.constante.bsy + parseInt(settings.constante.bsy / 2);
+        this.x = x * settings.constante.bsx + Math.floor(settings.constante.bsx / 2);
+        this.y = y * settings.constante.bsy + Math.floor(settings.constante.bsy / 2);
 
         this.radio = 4.0;
         this.ancho = this.radio * 2;

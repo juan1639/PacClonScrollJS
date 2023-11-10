@@ -92,15 +92,19 @@ let eventos_click = document.addEventListener('click', (event) => {
     }
 
     if (event.target.id === 'boton__le' || event.target.parentElement.id === 'boton__le') {
+        reset_teclasCursor();
         settings.controles.izquierda = true;
 
     } else if (event.target.id === 'boton__ri' || event.target.parentElement.id === 'boton__ri') {
+        reset_teclasCursor();
         settings.controles.derecha = true;
 
     } else if (event.target.id === 'boton__up' || event.target.parentElement.id === 'boton__up') {
+        reset_teclasCursor();
         settings.controles.arriba = true;
 
     } else if (event.target.id === 'boton__do' || event.target.parentElement.id === 'boton__do') {
+        reset_teclasCursor();
         settings.controles.abajo = true;
     } 
 });

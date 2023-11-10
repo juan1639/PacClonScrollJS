@@ -9,8 +9,6 @@ import { settings } from './main.js';
 } from '../canvasDraw/dibujaCanvas.js'; */
 
 // ============================================================================
-//  clase PacMan
-// ----------------------------------------------------------------------------
 export class PacMan {
 
     constructor() {
@@ -22,6 +20,8 @@ export class PacMan {
         this.alto = settings.constante.bsy;
         //this.radio = Math.floor(settings.constante.bsy / 2.2);
         this.radio = Math.floor(settings.constante.bsy / 2);
+
+        this.escalaXY = [];
 
         this.color = 'yellow';
 
@@ -125,8 +125,8 @@ export class PacMan {
 
         if (this.x % settings.constante.bsx == 0 && this.y % settings.constante.bsy == 0) {
 
-            x = parseInt(this.x / settings.constante.bsx) + this.direccion[this.pulsada][0];
-            y = parseInt(this.y / settings.constante.bsy) + this.direccion[this.pulsada][1];
+            x = Math.floor(this.x / settings.constante.bsx) + this.direccion[this.pulsada][0];
+            y = Math.floor(this.y / settings.constante.bsy) + this.direccion[this.pulsada][1];
 
             if (!(settings.objeto.laberinto.colision(x, y))) {
                 this.velX = this.direccion[this.pulsada][0];
@@ -137,8 +137,8 @@ export class PacMan {
             }
         }
 
-        x = parseInt((this.x + this.velX + this.ancho * this.sumarAncho) / settings.constante.bsx);
-        y = parseInt((this.y + this.velY + this.alto * this.sumarAlto) / settings.constante.bsy);
+        x = Math.floor((this.x + this.velX + this.ancho * this.sumarAncho) / settings.constante.bsx);
+        y = Math.floor((this.y + this.velY + this.alto * this.sumarAlto) / settings.constante.bsy);
 
         if (!(settings.objeto.laberinto.colision(x, y))) {
             this.x += this.velX * 2;
