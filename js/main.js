@@ -45,8 +45,9 @@ window.onload = () => {
     // INSTANCIAR Settings -------------------------------------------
     settings = new Settings();
 
-    canvas.width = settings.resolucion[0];
-    canvas.height = settings.resolucion[1] - settings.constante.bsy;
+    settings.canvas.width = settings.resolucion[0];
+    settings.canvas.height = settings.resolucion[1] - settings.constante.bsy;
+    settings.ctx.scale(settings.escala.x, settings.escala.y);
 
     // sonidos.presentacion.play();
     // sonidos.presentacion.volume = 0.6;

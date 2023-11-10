@@ -20,6 +20,11 @@ export class Settings {
             this.constante.bsy * this.constante.nro_filas
         ];
 
+        this.escala = {
+            x: 2,
+            y: 2
+        }
+
         this.array_laberinto = [
             [9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9],
             [9,5,1,1,1,1,1,1,1,9,1,1,1,1,1,1,1,5,9],

@@ -52,16 +52,23 @@ export class PacMan {
         if (settings.estado.actual === 1) this.actualiza();
 
         // ----------------------------------------------------------
-        const corr = 0;
-        const r = this.radio;
+        if (settings.escala.x === 1 && settings.escala.y === 1) {
 
-        settings.ctx.beginPath();
-        //settings.ctx.arc(x + r + corr, y + r + corr, r, 0, Math.PI * 2);
-        settings.ctx.arc(this.x + r + corr, this.y + r + corr, r, 0, Math.PI * 2);
-        settings.ctx.fillStyle = this.color;
-        settings.ctx.fill();
-        settings.ctx.closePath();
+            const corr = 0;
+            const r = this.radio;
 
+            settings.ctx.beginPath();
+            //settings.ctx.arc(x + r + corr, y + r + corr, r, 0, Math.PI * 2);
+            settings.ctx.arc(this.x + r + corr, this.y + r + corr, r, 0, Math.PI * 2);
+            settings.ctx.fillStyle = this.color;
+            settings.ctx.fill();
+            settings.ctx.closePath();
+
+        } else {
+
+            this.escalaXY = this.dibuja_escala();
+        }
+        
         /* canvasPacMan(this.x, this.y, this.radio, this.color);
 
         if (this.velX == 1) {
@@ -76,6 +83,29 @@ export class PacMan {
 
         // ctx.drawImage(pacmanImg, 0, 0, pacmanImg.width - 1, pacmanImg.height - 1, 
         //     this.x, this.y, this.ancho, this.alto);
+    }
+
+    dibuja_escala() {
+
+        const x = Math.floor(settings.resolucion[0] / 4);
+        const y = Math.floor(settings.resolucion[1] / 4);
+
+        /* const resX = settings.resolucion[0];
+        const resY = settings.resolucion[1];
+        const x = Math.floor(this.x - resX / 2);
+        const y = Math.floor(this.y - resY / 2); */
+
+        const corr = 0;
+        const r = this.radio;
+
+        settings.ctx.beginPath();
+        //settings.ctx.arc(x + r + corr, y + r + corr, r, 0, Math.PI * 2);
+        settings.ctx.arc(x + corr, y + corr, r, 0, Math.PI * 2);
+        settings.ctx.fillStyle = this.color;
+        settings.ctx.fill();
+        settings.ctx.closePath();
+
+        return [x - this.radio, y - this.radio];
     }
 
     actualiza() {
