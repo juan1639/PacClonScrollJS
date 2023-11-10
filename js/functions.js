@@ -3,6 +3,72 @@ import { settings } from './main.js';
 // ============================================================================
 //  Funciones varias
 // ----------------------------------------------------------------------------
+function dibujarFantasmas() {
+
+    for (let i = 0; i < settings.constante.nro_fantasmas; i ++) {
+        let corr = 9;
+
+        if (checkColision(settings.objeto.fantasma[i], settings.objeto.pacman, corr) && settings.estado.actual == 9) {
+
+            if (!settings.estadoFantasmas.azules) {
+
+                settings.estado.actual = 2;  // Secuencia PacMan Dies...
+                settings.estadoFantasmas.azules = false;
+                settings.estadoFantasmas.ptosComeFantasmas = 100;
+                playSonidos(settings.sonidos.pacman_dies);
+                settings.sonidos.pacman_dies.volume = 0.6;
+                settings.marcadores.vidas --;
+                settings.marcadores.scoreVidas.innerHTML = `Vidas: ${settings.marcadores.vidas}`;
+
+                if (settings.marcadores.vidas >= 0) {
+
+                    setTimeout(() => {
+                        settings.estado.actual = 1;
+                        settings.objeto.pacman.revivirPacMan();
+
+                        settings.objeto.fantasma[0].revivirFantasmas(3, 8, 0, 0);
+                        settings.objeto.fantasma[1].revivirFantasmas(5, 8, 1, 0);
+                        settings.objeto.fantasma[2].revivirFantasmas(9, 8, 2, 1);
+                        settings.objeto.fantasma[3].revivirFantasmas(11, 8, 3, 1);
+                    }, 3000);
+
+                } else {
+
+                    settings.estado.actual = 4;  // Game Over
+                    settings.estado.gameover = true;
+                    settings.marcadores.vidas = 0;
+                    settings.marcadores.scoreVidas.innerHTML = `Vidas: ${settings.marcadores.vidas}`;
+                    settings.marcadores.botonNewGame.style.display = 'flex';
+                    settings.sonidos.sirena_fondo.loop = false;
+                    playSonidos(settings.sonidos.game_over);
+                }
+
+            } else {
+
+                //console.log('azules');
+                if (!settings.objeto.fantasma[i].comido) {
+
+                    playSonidos(settings.sonidos.eating_ghost);
+                    settings.objeto.fantasma[i].comido = true;
+                    settings.objeto.fantasma[i].showPtos = true;
+                    settings.objeto.fantasma[i].showX = settings.objeto.fantasma[i].x 
+                    settings.objeto.fantasma[i].showY = settings.objeto.fantasma[i].y
+
+                    settings.estadoFantasmas.ptosComeFantasmas *= 2;
+                    settings.marcadores.puntos += estadoFantasmas.ptosComeFantasmas;
+                    settings.objeto.fantasma[i].showx2 = estadoFantasmas.ptosComeFantasmas;
+
+                    setTimeout(() => {
+                        settings.objeto.fantasma[i].showPtos = false;
+                    }, 2000);
+
+                }
+            }
+        }
+
+        settings.objeto.fantasma[i].dibuja();
+    }
+}
 
 // --------------------------------------------------------------------------
 function dibujaTodosPuntitos() {
@@ -200,6 +266,7 @@ function borraCanvas() {
 }
 
 export {
+    dibujarFantasmas,
     dibujaTodosPuntitos,
     escalar_objetos,
     borraCanvas,

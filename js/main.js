@@ -9,7 +9,7 @@ import {Laberinto} from './laberinto.js';
 import {Puntitos, PtosGordos} from './puntitos.js';
 //import {Fruta} from './fruta.js';
 import {PacMan} from './pacman.js';
-//import {Fantasma} from './fantasmas.js';
+import {Fantasma} from './fantasma.js';
 
 // ----------------------------------------------------------------------------
 //  import --> funciones varias
@@ -24,7 +24,8 @@ import {
 // ----------------------------------------------------------------------------
 import {
     borraCanvas,
-    dibujaTodosPuntitos
+    dibujaTodosPuntitos,
+    dibujarFantasmas
 } from './functions.js';
 
 // ----------------------------------------------------------------------------
@@ -87,10 +88,10 @@ window.onload = () => {
     settings.objeto.pacman = new PacMan();
 
     // INSTANCIAR (FANTASMAS) ----------------------------------------
-    /* objeto.fantasma[0] = new Fantasma(3 * constante.bsx, 8 * constante.bsy, 0, 0);
-    objeto.fantasma[1] = new Fantasma(5 * constante.bsx, 8 * constante.bsy, 1, 0);
-    objeto.fantasma[2] = new Fantasma(9 * constante.bsx, 8 * constante.bsy, 2, 1);
-    objeto.fantasma[3] = new Fantasma(11 * constante.bsx, 8 * constante.bsy, 3, 1); */
+    settings.objeto.fantasma[0] = new Fantasma(3 * settings.constante.bsx, 8 * settings.constante.bsy, 0, 0);
+    settings.objeto.fantasma[1] = new Fantasma(5 * settings.constante.bsx, 8 * settings.constante.bsy, 1, 0);
+    settings.objeto.fantasma[2] = new Fantasma(9 * settings.constante.bsx, 8 * settings.constante.bsy, 2, 1);
+    settings.objeto.fantasma[3] = new Fantasma(11 * settings.constante.bsx, 8 * settings.constante.bsy, 3, 1);
 
     // --- Ejecutamos BUCLE PRINCIPAL (Intervalo cada 1000/FPS) ------
     setInterval(function() {
@@ -130,7 +131,7 @@ function bucle_principal() {
         dibujaTodosPuntitos();
         //objeto.fruta.dibuja();
         settings.objeto.pacman.dibuja();
-        //dibujarFantasmas();
+        dibujarFantasmas();
 
         //checkComerFruta();
         //elNivelSuperado();
