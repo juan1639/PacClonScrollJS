@@ -16,7 +16,8 @@ import {Fantasma} from './fantasma.js';
 // ----------------------------------------------------------------------------
 import {
     eventos_keydown,
-    eventos_click
+    eventos_click,
+    eventos_change
 } from './controles.js';
 
 // ----------------------------------------------------------------------------
@@ -27,17 +28,15 @@ import {
     dibujaTodosPuntitos,
     dibujarFantasmas,
     elNivelSuperado,
-    comprobarNivelSuperado
+    comprobarNivelSuperado,
+    checkComerFruta,
+    mostrarTextos,
+    laPresentacion
 } from './functions.js';
 
 // ----------------------------------------------------------------------------
-//  import --> funciones dibujado en Canvas
-// ----------------------------------------------------------------------------
-/* import {
-    
-} from './dibujaCanvas.js'; */
-
-// ----------------------------------------------------------------------------
+const escalas_validas = [1, 2, 3, 4];
+let escalaSel = 0;
 let settings;
 
 // ================================================================================
@@ -45,8 +44,12 @@ let settings;
 // --------------------------------------------------------------------------------
 window.onload = () => {
 
+    while (!escalas_validas.includes(escalaSel)) {
+        escalaSel = parseInt(prompt("Seleciona el Zoom (1, 2, 3, 4)"));
+    }
+
     // INSTANCIAR Settings -------------------------------------------
-    settings = new Settings();
+    settings = new Settings(escalaSel);
 
     settings.canvas.width = settings.resolucion[0];
     settings.canvas.height = settings.resolucion[1] - settings.constante.bsy;
@@ -127,7 +130,7 @@ function bucle_principal() {
     borraCanvas();
 
     if (settings.estado.actual == -1) {
-        laPresentacion(settings.objeto.animaPacMan);
+        laPresentacion();
     }
 
     if (settings.estado.actual != -1) {
@@ -139,10 +142,10 @@ function bucle_principal() {
         settings.objeto.pacman.dibuja();
         dibujarFantasmas();
 
-        //checkComerFruta();
+        checkComerFruta();
         elNivelSuperado();
         //elGameOver();
-        //mostrarMarcadores();
+        mostrarTextos();
     }
 }
 

@@ -39,7 +39,14 @@ export class Puntitos {
             escalar[0] += Math.floor(settings.constante.bsx / 2);
             escalar[1] += Math.floor(settings.constante.bsy / 2);
 
-            settings.ctx.arc(escalar[0], escalar[1], this.radio, 0, Math.PI * 2);
+            let tile = settings.constante.bsx;
+            tile = tile * 2;
+            const resXY = settings.resolucion;
+
+            if ((escalar[0] > -tile && escalar[0] <= resXY[0]) || (escalar[1] > -tile && escalar[1] <= resXY[1])) {
+
+                settings.ctx.arc(escalar[0], escalar[1], this.radio, 0, Math.PI * 2);
+            }
         }
 
         settings.ctx.fillStyle = this.color;

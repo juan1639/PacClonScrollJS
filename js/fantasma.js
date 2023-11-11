@@ -58,6 +58,7 @@ export class Fantasma {
 
         this.x = x;
         this.y = y;
+        this.escalar = [];
 
         this.velX = this.hacia_donde_velXY[this.direccion][0];
         this.velY = this.hacia_donde_velXY[this.direccion][1];
@@ -110,7 +111,6 @@ export class Fantasma {
 
     dibuja() {
 
-        let escalar = [];
         let x = this.x;
         let y = this.y;
 
@@ -124,9 +124,9 @@ export class Fantasma {
         // -----------------------------------------------------------------
         if (settings.escala.x !== 1 || settings.escala.y !== 1) {
             
-            escalar = escalar_objetos(this.x, this.y);
-            x = escalar[0];
-            y = escalar[1];
+            this.escalar = escalar_objetos(this.x, this.y);
+            x = this.escalar[0];
+            y = this.escalar[1];
         }
 
         canvasFantasma(x, y, this.radio, this.color, this.comido);

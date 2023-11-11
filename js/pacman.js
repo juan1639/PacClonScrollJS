@@ -84,8 +84,11 @@ export class PacMan {
 
     dibuja_escala() {
 
-        const x = Math.floor(settings.resolucion[0] / 4);
-        const y = Math.floor(settings.resolucion[1] / 4);
+        let x = Math.floor(settings.resolucion[0] / 2);
+        let y = Math.floor(settings.resolucion[1] / 2);
+
+        x /= settings.escala.x;
+        y /= settings.escala.y;
 
         return [x - this.radio, y - this.radio];
     }
@@ -160,23 +163,23 @@ export class PacMan {
         this.sumarAlto = 0;
     }
 
-    secuenciaPresentacion(animaPacMan) {
+    secuenciaPresentacion() {
 
         this.x = this.x + this.velX;
 
-        if ((this.x > resolucion[0] && this.velX > 0) || (this.x < -99 && this.velX < 0)) 
+        if ((this.x > settings.resolucion[0] && this.velX > 0) || (this.x < -99 && this.velX < 0)) 
             this.velX = -this.velX;
 
         canvasPacMan(this.x, this.y, this.radio, this.color);
 
         if (this.velX == 1) {
-            canvasPacManRi(this.x, this.y, this.radio, this.color, animaPacMan);
+            canvasPacManRi(this.x, this.y, this.radio, this.color, settings.objeto.animaPacMan);
         } else if (this.velX == -1) {
-            canvasPacManLe(this.x, this.y, this.radio, this.color, animaPacMan);
+            canvasPacManLe(this.x, this.y, this.radio, this.color, settings.objeto.animaPacMan);
         } else if (this.velY == 1) {
-            canvasPacManDo(this.x, this.y, this.radio, this.color, animaPacMan);
+            canvasPacManDo(this.x, this.y, this.radio, this.color, settings.objeto.animaPacMan);
         } else if (this.velY == -1) {
-            canvasPacManUp(this.x, this.y, this.radio, this.color, animaPacMan);
+            canvasPacManUp(this.x, this.y, this.radio, this.color, settings.objeto.animaPacMan);
         }
 
     }

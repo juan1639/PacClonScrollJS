@@ -3,7 +3,7 @@
 // ----------------------------------------------------------------------------
 export class Settings {
 
-    constructor() {
+    constructor(escalaSel) {
 
         this.constante = {
             bsx: 40,
@@ -21,8 +21,8 @@ export class Settings {
         ];
 
         this.escala = {
-            x: 2,
-            y: 2
+            x: escalaSel,
+            y: escalaSel
         }
 
         this.array_laberinto = [
@@ -80,7 +80,7 @@ export class Settings {
         }
 
         this.estado = {
-            actual: 1,
+            actual: -1,
             gameover: false,
             nivel_superado: false
         }

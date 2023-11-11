@@ -51,16 +51,16 @@ function dibujarFantasmas() {
                     playSonidos(settings.sonidos.eating_ghost);
                     settings.objeto.fantasma[i].comido = true;
                     settings.objeto.fantasma[i].showPtos = true;
-                    settings.objeto.fantasma[i].showX = settings.objeto.fantasma[i].x 
-                    settings.objeto.fantasma[i].showY = settings.objeto.fantasma[i].y
+                    settings.objeto.fantasma[i].showX = settings.objeto.fantasma[i].escalar[0]; 
+                    settings.objeto.fantasma[i].showY = settings.objeto.fantasma[i].escalar[1];
 
                     settings.estadoFantasmas.ptosComeFantasmas *= 2;
-                    settings.marcadores.puntos += estadoFantasmas.ptosComeFantasmas;
-                    settings.objeto.fantasma[i].showx2 = estadoFantasmas.ptosComeFantasmas;
+                    settings.marcadores.puntos += settings.estadoFantasmas.ptosComeFantasmas;
+                    settings.objeto.fantasma[i].showx2 = settings.estadoFantasmas.ptosComeFantasmas;
 
                     setTimeout(() => {
                         settings.objeto.fantasma[i].showPtos = false;
-                    }, 2000);
+                    }, 1200);
 
                 }
             }
@@ -70,7 +70,7 @@ function dibujarFantasmas() {
     }
 }
 
-// --------------------------------------------------------------------------
+// ============================================================================
 function dibujaTodosPuntitos() {
 
     for (let i = 0; i < settings.objeto.array_puntitos.length; i ++) {
@@ -94,9 +94,9 @@ function dibujaTodosPuntitos() {
             if (settings.objeto.array_ptosGordos[i].visible && settings.estado.actual != 3) {
 
                 if (checkColision(settings.objeto.array_ptosGordos[i], settings.objeto.pacman, corr)) {
-                    settings.array_ptosGordos[i].visible = false;
+                    settings.objeto.array_ptosGordos[i].visible = false;
                     settings.objeto.contPuntitosComidos ++;
-                    settings.marcadores.puntos += objeto.array_ptosGordos[i].sumaPtos
+                    settings.marcadores.puntos += settings.objeto.array_ptosGordos[i].sumaPtos
                     settings.estadoFantasmas.azules = true;
                     playSonidos(settings.sonidos.eating_ghost);
                     playSonidos(settings.sonidos.azules);
@@ -125,15 +125,15 @@ function dibujaTodosPuntitos() {
     }
 }
 
-// --------------------------------------------------------------------------
+// ============================================================================
 function checkComerFruta() {
     let corr = 5;
 
     if (checkColision(settings.objeto.fruta, settings.objeto.pacman, corr) && settings.estado.actual == 1 && !settings.objeto.fruta.comido) {
         settings.objeto.fruta.comido = true;
         settings.objeto.fruta.showPtos = true;
-        settings.objeto.fruta.showX = settings.objeto.fruta.x 
-        settings.objeto.fruta.showY = settings.objeto.fruta.y
+        settings.objeto.fruta.showX = settings.objeto.fruta.escalar[0];
+        settings.objeto.fruta.showY = settings.objeto.fruta.escalar[1];
         playSonidos(settings.sonidos.eating_cherry);
 
         settings.marcadores.puntos += settings.estadoFantasmas.ptosComeFruta;
@@ -147,11 +147,11 @@ function checkComerFruta() {
                 settings.objeto.fruta.y = 11 * settings.constante.bsy;
             }, 9000);
 
-        }, 3000);
+        }, 2000);
     }
 }
 
-// --------------------------------------------------------------------------
+// ============================================================================
 function escalar_objetos(x, y) {
 
     let ofx;
@@ -168,7 +168,7 @@ function escalar_objetos(x, y) {
     return [0, 0];
 }
 
-// --------------------------------------------------------------------------
+// ============================================================================
 function checkColision(obj1, obj2, corr) {
     return obj1.x + corr < obj2.x + obj2.ancho - corr && 
             obj1.x + obj1.ancho - corr > obj2.x + corr &&
@@ -176,7 +176,7 @@ function checkColision(obj1, obj2, corr) {
             obj1.y + obj1.alto - corr > obj2.y + corr;
 }
 
-// --------------------------------------------------------------------------
+// ============================================================================
 function comprobarNivelSuperado() {
     let puntitosMasGordos = settings.objeto.array_puntitos.length + settings.objeto.array_ptosGordos.length;
 
@@ -222,53 +222,101 @@ function elNivelSuperado() {
     }, 5000);
 }
 
-// ------------------------------------------------------------------------
-function mostrarMarcadores() {
-    if (estado.actual == 0) {
+// ============================================================================
+function mostrarTextos() {
+    if (settings.estado.actual === 0) {
 
-        const gradi = ctx.createLinearGradient(Math.floor(resolucion[0] / 5) + Math.floor(resolucion[1] / 4), parseInt(resolucion[0] / 5) + 5, Math.floor(resolucion[1] / 1.5));
+        const rX = settings.resolucion[0];
+        const rY = settings.resolucion[1];
+
+        const gradi = settings.ctx.createLinearGradient(Math.floor(rX / 5), Math.floor(rY / 4), Math.floor(rX / 5) + 5, Math.floor(rY / 1.5));
         gradi.addColorStop(0, 'orangered');
         gradi.addColorStop(1, 'yellow');
 
-        ctx.font = '100px seriff';
-        ctx.fillStyle = gradi;
-        ctx.fillText('Preparado!', Math.floor(resolucion[0] / 5) + 5, 
-            Math.floor(resolucion[1] / 2));
+        settings.ctx.font = '100px seriff';
+        settings.ctx.fillStyle = gradi;
+        settings.ctx.fillText('Preparado!', Math.floor(rX / 5) + 5, Math.floor(rY / 2));
     }
 
-    if (estado.actual == 3) {
-        ctx.font = '100px seriff';
-        ctx.fillStyle = 'yellow';
-        ctx.fillText('Nivel Superado!', Math.floor(resolucion[0] / 9) + 5, 
-            Math.floor(resolucion[1] / 2));
+    if (settings.estado.actual === 3) {
+        settings.ctx.font = '100px seriff';
+        settings.ctx.fillStyle = 'yellow';
+        settings.ctx.fillText('Nivel Superado!', Math.floor(rX / 9) + 5, Math.floor(rY / 2));
     }
 
-    objeto.fantasma.forEach(fant => {
+    // -----------------------------------------------------------------------------
+    settings.objeto.fantasma.forEach(fant => {
         if (fant.showPtos) {
-            ctx.save();
-            ctx.shadowColor = 'orange';
-            ctx.shadowBlur = 10;
-            ctx.font = '30px seriff';
-            ctx.fillStyle = 'orangered';
-            ctx.fillText(fant.showx2, fant.showX, fant.showY);
-            ctx.restore();
+            settings.ctx.save();
+            settings.ctx.shadowColor = 'orange';
+            settings.ctx.shadowBlur = 10;
+            settings.ctx.font = '30px seriff';
+            settings.ctx.fillStyle = 'orangered';
+            settings.ctx.fillText(fant.showx2, fant.showX, fant.showY);
+            settings.ctx.restore();
         }
     });
 
-    if (objeto.fruta.showPtos) {
-        ctx.save();
-        ctx.shadowColor = 'orange';
-        ctx.shadowBlur = 10;
-        ctx.font = '32px seriff';
-        ctx.fillStyle = 'orangered';
-        ctx.fillText(estadoFantasmas.ptosComeFruta, objeto.fruta.showX, objeto.fruta.showY);
-        ctx.restore();
+    if (settings.objeto.fruta.showPtos) {
+        settings.ctx.save();
+        settings.ctx.shadowColor = 'orange';
+        settings.ctx.shadowBlur = 10;
+        settings.ctx.font = '32px seriff';
+        settings.ctx.fillStyle = 'orangered';
+        settings.ctx.fillText(settings.estadoFantasmas.ptosComeFruta, settings.objeto.fruta.showX, settings.objeto.fruta.showY);
+        settings.ctx.restore();
     }
 }
 
+// ========================================================================
+//  Presentacion / Menu Principal
 // ------------------------------------------------------------------------
+function laPresentacion() {
+
+    const rX = settings.resolucion[0];
+    const rY = settings.resolucion[1];
+
+    let sizeTxtTitulo = 120;
+    let sizeTxt2 = 30;
+    let x = Math.floor(rX / 5) + 5;
+    let y = Math.floor(rY / 2);
+    let x2 = Math.floor(rX / 9) + 5;
+    let y2 = rY - settings.constante.bsy * 2;
+    
+    if (settings.escala.x === 1 && settings.escala.y === 1) {
+        
+        sizeTxtTitulo = 120;
+        sizeTxt2 = 30;
+        x = Math.floor(rX / 5) + 5;
+        y = Math.floor(rY / 2);
+        x2 = Math.floor(rX / 9) + 5;
+        y2 = rY - settings.constante.bsy * 2;
+        
+    } else {
+        
+        sizeTxtTitulo = Math.floor(120 / settings.escala.x);
+        sizeTxt2 = Math.floor(30 / settings.escala.x);
+        x = Math.floor(rX / (5 * settings.escala.x)) + 5;
+        y = Math.floor(rY / (2 * settings.escala.y));
+        x2 = Math.floor(rX / (9 * settings.escala.x)) + 5;
+        y2 = Math.floor(rY / (settings.escala.y - 0.5)) - (settings.constante.bsy * 2 * settings.escala.y);
+    }
+
+    settings.ctx.font = sizeTxtTitulo.toString() + 'px seriff';
+    settings.ctx.fillStyle = 'orangered';
+    settings.ctx.fillText('Pac Clon', x, y);
+
+    settings.ctx.font = sizeTxt2.toString() + 'px seriff';
+    settings.ctx.fillStyle = 'white';
+    settings.ctx.fillText('Pulse INTRO o Nueva Partida para comenzar...', x2, y2);
+
+    settings.objeto.pacman.secuenciaPresentacion();
+    settings.objeto.fantasma[1].secuenciaPresentacion();
+}
+
+// ============================================================================
 //  Funciones de SONIDOS
-// ------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
 function playSonidos(sonido) {
     sonido.play();
 }
@@ -279,12 +327,12 @@ function playSonidosLoop(sonido, loop, volumen) {
     sonido.volume = volumen;
 }
 
-// ------------------------------------------------------------------------
+// ============================================================================
 function reescalaCanvas() {
     return;
 }
 
-// ------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
 function borraCanvas() {
     // canvas.width = canvas.width;
     // canvas.height = canvas.height;
@@ -299,7 +347,8 @@ export {
     escalar_objetos,
     comprobarNivelSuperado,
     elNivelSuperado,
-    mostrarMarcadores,
+    mostrarTextos,
+    laPresentacion,
     borraCanvas,
     playSonidos,
     playSonidosLoop

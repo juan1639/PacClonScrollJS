@@ -11,6 +11,7 @@ export class Fruta {
 
         this.x = 9 * settings.constante.bsx;
         this.y = 11 * settings.constante.bsy;
+        this.escalar = [];
 
         this.direccion = 0;
 
@@ -93,7 +94,6 @@ export class Fruta {
 
     dibuja() {
 
-        let escalar = [];
         let x = this.x;
         let y = this.y;
 
@@ -103,9 +103,9 @@ export class Fruta {
         // -----------------------------------------------------------------
         if (settings.escala.x !== 1 || settings.escala.y !== 1) {
             
-            escalar = escalar_objetos(this.x, this.y);
-            x = escalar[0];
-            y = escalar[1];
+            this.escalar = escalar_objetos(this.x, this.y);
+            x = this.escalar[0];
+            y = this.escalar[1];
         }
 
         if (!this.comido) canvasFruta(x, y, this.radio, this.x, this.y);
