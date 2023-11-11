@@ -16,8 +16,7 @@ import {Fantasma} from './fantasma.js';
 // ----------------------------------------------------------------------------
 import {
     eventos_keydown,
-    eventos_click,
-    eventos_change
+    eventos_click
 } from './controles.js';
 
 // ----------------------------------------------------------------------------
