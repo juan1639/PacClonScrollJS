@@ -31,6 +31,7 @@ import {
     comprobarNivelSuperado,
     checkComerFruta,
     mostrarTextos,
+    elGameOver,
     laPresentacion
 } from './functions.js';
 
@@ -144,7 +145,7 @@ function bucle_principal() {
 
         checkComerFruta();
         elNivelSuperado();
-        //elGameOver();
+        elGameOver();
         mostrarTextos();
     }
 }

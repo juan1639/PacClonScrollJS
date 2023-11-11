@@ -51,9 +51,18 @@ function dibujarFantasmas() {
                     playSonidos(settings.sonidos.eating_ghost);
                     settings.objeto.fantasma[i].comido = true;
                     settings.objeto.fantasma[i].showPtos = true;
-                    settings.objeto.fantasma[i].showX = settings.objeto.fantasma[i].escalar[0]; 
-                    settings.objeto.fantasma[i].showY = settings.objeto.fantasma[i].escalar[1];
 
+                    if (settings.escala.x === 1 && settings.escala.y === 1) {
+
+                        settings.objeto.fantasma[i].showX = settings.objeto.fantasma[i].x; 
+                        settings.objeto.fantasma[i].showY = settings.objeto.fantasma[i].y;
+
+                    } else {
+
+                        settings.objeto.fantasma[i].showX = settings.objeto.fantasma[i].escalar[0]; 
+                        settings.objeto.fantasma[i].showY = settings.objeto.fantasma[i].escalar[1];
+                    }
+                    
                     settings.estadoFantasmas.ptosComeFantasmas *= 2;
                     settings.marcadores.puntos += settings.estadoFantasmas.ptosComeFantasmas;
                     settings.objeto.fantasma[i].showx2 = settings.estadoFantasmas.ptosComeFantasmas;
@@ -127,13 +136,24 @@ function dibujaTodosPuntitos() {
 
 // ============================================================================
 function checkComerFruta() {
+
     let corr = 5;
 
     if (checkColision(settings.objeto.fruta, settings.objeto.pacman, corr) && settings.estado.actual == 1 && !settings.objeto.fruta.comido) {
         settings.objeto.fruta.comido = true;
         settings.objeto.fruta.showPtos = true;
-        settings.objeto.fruta.showX = settings.objeto.fruta.escalar[0];
-        settings.objeto.fruta.showY = settings.objeto.fruta.escalar[1];
+
+        if (settings.escala.x === 1 && settings.escala.y === 1) {
+
+            settings.objeto.fruta.showX = settings.objeto.fruta.x;
+            settings.objeto.fruta.showY = settings.objeto.fruta.y;
+
+        } else {
+
+            settings.objeto.fruta.showX = settings.objeto.fruta.escalar[0];
+            settings.objeto.fruta.showY = settings.objeto.fruta.escalar[1];
+        }
+        
         playSonidos(settings.sonidos.eating_cherry);
 
         settings.marcadores.puntos += settings.estadoFantasmas.ptosComeFruta;
@@ -170,6 +190,7 @@ function escalar_objetos(x, y) {
 
 // ============================================================================
 function checkColision(obj1, obj2, corr) {
+    
     return obj1.x + corr < obj2.x + obj2.ancho - corr && 
             obj1.x + obj1.ancho - corr > obj2.x + corr &&
             obj1.y + corr < obj2.y + obj2.alto - corr && 
@@ -178,6 +199,7 @@ function checkColision(obj1, obj2, corr) {
 
 // ============================================================================
 function comprobarNivelSuperado() {
+
     let puntitosMasGordos = settings.objeto.array_puntitos.length + settings.objeto.array_ptosGordos.length;
 
     if (settings.objeto.contPuntitosComidos >= puntitosMasGordos) {
@@ -189,25 +211,26 @@ function comprobarNivelSuperado() {
 
 // --------------------------------------------------------------------------
 function elNivelSuperado() {
+
     if (!settings.estado.nivel_superado) return;
 
+    settings.estado.nivel_superado = false;
     settings.marcadores.nivel ++;
     settings.marcadores.scoreNivel.innerHTML = `Nivel: ${settings.marcadores.nivel}`;
     settings.estadoFantasmas.ptosComeFruta *= 2;
     settings.objeto.fruta.comido = false;
     settings.estadoFantasmas.duracionAzules -= settings.marcadores.nivel * 1000;
-    settings.estado.nivel_superado = false;
     settings.objeto.contPuntitosComidos = 0;
     settings.estado.actual = 3;
     settings.sonidos.presentacion.play();
 
     if (settings.estadoFantasmas.duracionAzules < 2000) settings.estadoFantasmas.duracionAzules = 2000;
 
-    settings.objeto.puntito.forEach(punto => {
+    settings.objeto.array_puntitos.forEach(punto => {
         punto.visible = true;
     });
 
-    settings.objeto.ptoGordo.forEach(gordo => {
+    settings.objeto.array_ptosGordos.forEach(gordo => {
         gordo.visible = true;
     });
 
@@ -224,24 +247,64 @@ function elNivelSuperado() {
 
 // ============================================================================
 function mostrarTextos() {
+
     if (settings.estado.actual === 0) {
 
         const rX = settings.resolucion[0];
         const rY = settings.resolucion[1];
 
-        const gradi = settings.ctx.createLinearGradient(Math.floor(rX / 5), Math.floor(rY / 4), Math.floor(rX / 5) + 5, Math.floor(rY / 1.5));
+        let sizeTxtPreparado = 120;
+        let x = Math.floor(rX / 5) + 5;
+        let y = Math.floor(rY / 2);
+
+        let gradi = settings.ctx.createLinearGradient(Math.floor(rX / 5), Math.floor(rY / 4), Math.floor(rX / 5) + 5, Math.floor(rY / 1.5));
         gradi.addColorStop(0, 'orangered');
         gradi.addColorStop(1, 'yellow');
 
-        settings.ctx.font = '100px seriff';
+        if (settings.escala.x === 1 && settings.escala.y === 1) {
+        
+            sizeTxtPreparado = 120;
+            x = Math.floor(rX / 5) + 5;
+            y = Math.floor(rY / 2);
+            
+        } else {
+            
+            sizeTxtPreparado = Math.floor(120 / settings.escala.x);
+            x = Math.floor(rX / (5 * settings.escala.x)) + 5;
+            y = Math.floor(rY / (2 * settings.escala.y));
+            gradi = settings.ctx.createLinearGradient(x, Math.floor(y / 2), x, Math.floor(rY / (1.5 * settings.escala.y)));
+            gradi.addColorStop(0, 'orangered');
+            gradi.addColorStop(1, 'yellow');
+        }
+
+        settings.ctx.font = sizeTxtPreparado.toString() + 'px seriff';
         settings.ctx.fillStyle = gradi;
-        settings.ctx.fillText('Preparado!', Math.floor(rX / 5) + 5, Math.floor(rY / 2));
+        settings.ctx.fillText('Preparado!', x, y);
     }
 
     if (settings.estado.actual === 3) {
-        settings.ctx.font = '100px seriff';
-        settings.ctx.fillStyle = 'yellow';
-        settings.ctx.fillText('Nivel Superado!', Math.floor(rX / 9) + 5, Math.floor(rY / 2));
+
+        const rX = settings.resolucion[0];
+        const rY = settings.resolucion[1];
+
+        let sizeTxtPreparado = 100;
+        let x = Math.floor(rX / 9) + 5;
+        let y = Math.floor(rY / 2);
+
+        if (settings.escala.x === 1 && settings.escala.y === 1) {
+        
+            sizeTxtPreparado = 100;
+            
+        } else {
+            
+            sizeTxtPreparado = Math.floor(100 / settings.escala.x);
+            x = Math.floor(rX / (9 * settings.escala.x)) + 5;
+            y = Math.floor(rY / (2 * settings.escala.y));
+        }
+
+        settings.ctx.font = sizeTxtPreparado + 'px seriff';
+        settings.ctx.fillStyle = 'lightgreen';
+        settings.ctx.fillText('Nivel Superado!', x, y);
     }
 
     // -----------------------------------------------------------------------------
@@ -266,6 +329,69 @@ function mostrarTextos() {
         settings.ctx.fillText(settings.estadoFantasmas.ptosComeFruta, settings.objeto.fruta.showX, settings.objeto.fruta.showY);
         settings.ctx.restore();
     }
+}
+
+// -------------------------------------------------------------------------
+function nuevaPartida() {
+
+    settings.estado.actual = 0;
+    settings.estado.gameover = false;
+
+    settings.marcadores.puntos = 0;
+    settings.marcadores.scorePtos.innerHTML = `Puntos: ${settings.marcadores.puntos}`;
+    settings.marcadores.nivel = 1;
+    settings.marcadores.scoreNivel.innerHTML = `Nivel: ${settings.marcadores.nivel}`;
+    settings.marcadores.vidas = 3;
+    settings.marcadores.scoreVidas.innerHTML = `Vidas: ${settings.marcadores.vidas}`;
+
+    settings.estadoFantasmas.ptosComeFruta = 200;
+    settings.objeto.fruta.comido = false;
+    settings.estadoFantasmas.duracionAzules = 8000;
+    settings.estado.nivel_superado = false;
+    settings.objeto.contPuntitosComidos = 0;
+
+    settings.objeto.array_puntitos.forEach(punto => {
+        punto.visible = true;
+    });
+
+    settings.objeto.array_ptosGordos.forEach(gordo => {
+        gordo.visible = true;
+    });
+
+    settings.objeto.pacman.revivirPacMan();
+
+    settings.objeto.fantasma[0].revivirFantasmas(3, 8, 0, 0);
+    settings.objeto.fantasma[1].revivirFantasmas(5, 8, 1, 0);
+    settings.objeto.fantasma[2].revivirFantasmas(9, 8, 2, 1);
+    settings.objeto.fantasma[3].revivirFantasmas(11, 8, 3, 1);
+}
+
+// -------------------------------------------------------------------------
+function elGameOver() {
+
+    if (!settings.estado.gameover) return;
+
+    const rX = settings.resolucion[0];
+    const rY = settings.resolucion[1];
+
+    let sizeTxtGameOver = 100;
+    let x = Math.floor(rX / 5) + 5;
+    let y = Math.floor(rY / 2);
+
+    if (settings.escala.x === 1 && settings.escala.y === 1) {
+        
+        sizeTxtGameOver = 100;
+        
+    } else {
+        
+        sizeTxtGameOver = Math.floor(100 / settings.escala.x);
+        x = Math.floor(rX / (5 * settings.escala.x)) + 5;
+        y = Math.floor(rY / (2 * settings.escala.y));    
+    }
+
+    settings.ctx.font = sizeTxtGameOver.toString() + 'px seriff';
+    settings.ctx.fillStyle = 'orange';
+    settings.ctx.fillText('Game Over', x, y);
 }
 
 // ========================================================================
@@ -348,6 +474,8 @@ export {
     comprobarNivelSuperado,
     elNivelSuperado,
     mostrarTextos,
+    elGameOver,
+    nuevaPartida,
     laPresentacion,
     borraCanvas,
     playSonidos,

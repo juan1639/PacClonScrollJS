@@ -210,7 +210,16 @@ export class Fantasma {
         let de = 0;
         let vert = 0;
 
-        canvasFantasma(settings.objeto.pacman.x + 50, settings.objeto.pacman.y, this.radio, this.color, this.comido);
+        let pacX = settings.objeto.pacman.escalaXY[0];
+        let pacY = settings.objeto.pacman.escalaXY[1];
+        const gap = Math.floor(settings.constante.bsx * 1.3);
+
+        if (settings.escala.x === 1 && settings.escala.y === 1) {
+            pacX = settings.objeto.pacman.x;
+            pacY = settings.objeto.pacman.y;
+        }
+
+        canvasFantasma(pacX + gap, pacY, this.radio, this.color, this.comido);
 
         if (settings.objeto.pacman.velX == 1) {
             iz = 5;
@@ -221,6 +230,6 @@ export class Fantasma {
             de = 4;
         }
 
-        canvasOjosFantasma(settings.objeto.pacman.x + 50, settings.objeto.pacman.y, this.radio, iz, de, vert);
+        canvasOjosFantasma(pacX + gap, pacY, this.radio, iz, de, vert);
     }
 }

@@ -4,11 +4,20 @@ import { settings } from './main.js';
 //  Funciones de dibujado en Canvas
 // ------------------------------------------------------------------------
 function canvasPacMan(x, y, r, pacColor) {
-    let corr = 2;
 
-    const gradi = settings.ctx.createRadialGradient(x + r, y + r, 10, x + r, y + r, r);
-    gradi.addColorStop(0, '#FA1');
-    gradi.addColorStop(1, '#FE1');
+    let corr = 2;
+    let gradi;
+
+    if (settings.estado.actual !== 1) {
+
+        gradi = 'rgb(245, 225, 9)';
+
+    } else {
+
+        gradi = settings.ctx.createRadialGradient(x + r, y + r, 10, x + r, y + r, r);
+        gradi.addColorStop(0, '#FA1');
+        gradi.addColorStop(1, '#FE1');
+    }
 
     settings.ctx.beginPath();
     settings.ctx.arc(x + r + corr, y + r + corr, r, 0, Math.PI * 2);
@@ -18,6 +27,7 @@ function canvasPacMan(x, y, r, pacColor) {
 }
 
 function canvasPacManRi(x, y, r, pacColor, animaPacMan) {
+
     let corr = 2;
 
     if (!animaPacMan) {
@@ -39,6 +49,7 @@ function canvasPacManRi(x, y, r, pacColor, animaPacMan) {
 }
 
 function canvasPacManLe(x, y, r, pacColor, animaPacMan) {
+
     let corr = 2;
 
     if (!animaPacMan) {
@@ -60,6 +71,7 @@ function canvasPacManLe(x, y, r, pacColor, animaPacMan) {
 }
 
 function canvasPacManDo(x, y, r, pacColor, animaPacMan) {
+
     let corr = 2;
 
     if (!animaPacMan) {
@@ -82,6 +94,7 @@ function canvasPacManDo(x, y, r, pacColor, animaPacMan) {
 }
 
 function canvasPacManUp(x, y, r, pacColor, animaPacMan) {
+
     let corr = 2;
 
     if (!animaPacMan) {

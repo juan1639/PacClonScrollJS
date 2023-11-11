@@ -1,4 +1,5 @@
 import { settings } from './main.js';
+import { escalar_objetos } from './functions.js';
 
 import {
     canvasPacMan, 
@@ -14,7 +15,7 @@ export class PacMan {
     constructor() {
 
         this.x = 9 * settings.constante.bsx;
-        this.y = 4 * settings.constante.bsy;
+        this.y = 1 * settings.constante.bsy;
 
         this.ancho = settings.constante.bsx;
         this.alto = settings.constante.bsy;
@@ -47,10 +48,10 @@ export class PacMan {
         let x = this.x;
         let y = this.y;
 
-        /* if (settings.estado.actual == 2) {
-            this.pacManDies(animaPacMan);
+        if (settings.estado.actual === 2) {
+            this.pacManDies();
             return;
-        } */
+        }
 
         if (settings.estado.actual === 1) this.actualiza();
 
@@ -70,16 +71,21 @@ export class PacMan {
 
         if (this.velX == 1) {
             canvasPacManRi(x, y, this.radio, this.color, settings.objeto.animaPacMan);
+
         } else if (this.velX == -1) {
             canvasPacManLe(x, y, this.radio, this.color, settings.objeto.animaPacMan);
+
         } else if (this.velY == 1) {
             canvasPacManDo(x, y, this.radio, this.color, settings.objeto.animaPacMan);
+
         } else if (this.velY == -1) {
             canvasPacManUp(x, y, this.radio, this.color, settings.objeto.animaPacMan);
         }
 
         // ctx.drawImage(pacmanImg, 0, 0, pacmanImg.width - 1, pacmanImg.height - 1, 
         //     this.x, this.y, this.ancho, this.alto);
+
+        this.tapar_escapatorias();
     }
 
     dibuja_escala() {
@@ -139,18 +145,37 @@ export class PacMan {
         }
     }
 
-    pacManDies(animaPacMan) {
-        /* canvasPacMan(this.x, this.y, this.radio, this.color);
+    pacManDies() {
 
-        if (this.diesAnima == 0) {
-            canvasPacManRi(this.x, this.y, this.radio, this.color, animaPacMan);
-        } else if (this.diesAnima == 2) {
-            canvasPacManLe(this.x, this.y, this.radio, this.color, animaPacMan);
-        } else if (this.diesAnima == 1) {
-            canvasPacManDo(this.x, this.y, this.radio, this.color, animaPacMan);
-        } else if (this.diesAnima == 3) {
-            canvasPacManUp(this.x, this.y, this.radio, this.color, animaPacMan);
-        } */
+        let x = this.x;
+        let y = this.y;
+
+        // ----------------------------------------------------------
+        if (settings.escala.x === 1 && settings.escala.y === 1) {
+
+            // Dibuja normal ...
+
+        } else {
+
+            this.escalaXY = this.dibuja_escala();
+            x = this.escalaXY[0];
+            y = this.escalaXY[1];
+        }
+
+        canvasPacMan(x, y, this.radio, this.color);
+
+        if (this.diesAnima === 0) {
+            canvasPacManRi(x, y, this.radio, this.color, settings.objeto.animaPacMan);
+
+        } else if (this.diesAnima === 2) {
+            canvasPacManLe(x, y, this.radio, this.color, settings.objeto.animaPacMan);
+
+        } else if (this.diesAnima === 1) {
+            canvasPacManDo(x, y, this.radio, this.color, settings.objeto.animaPacMan);
+
+        } else if (this.diesAnima === 3) {
+            canvasPacManUp(x, y, this.radio, this.color, settings.objeto.animaPacMan);
+        }
     }
 
     revivirPacMan() {
@@ -165,28 +190,76 @@ export class PacMan {
 
     secuenciaPresentacion() {
 
-        this.x = this.x + this.velX;
+        const limite_izquierdo = -(settings.constante.bsx * 5);
 
-        if ((this.x > settings.resolucion[0] && this.velX > 0) || (this.x < -99 && this.velX < 0)) 
+        let x = this.x;
+        let y = this.y;
+
+        // -----------------------------------------------------------------
+        this.x = this.x + this.velX * settings.escala.x;
+
+        if ((this.x > settings.resolucion[0] && this.velX > 0) || (this.x < limite_izquierdo && this.velX < 0)) {
+
             this.velX = -this.velX;
-
-        canvasPacMan(this.x, this.y, this.radio, this.color);
-
-        if (this.velX == 1) {
-            canvasPacManRi(this.x, this.y, this.radio, this.color, settings.objeto.animaPacMan);
-        } else if (this.velX == -1) {
-            canvasPacManLe(this.x, this.y, this.radio, this.color, settings.objeto.animaPacMan);
-        } else if (this.velY == 1) {
-            canvasPacManDo(this.x, this.y, this.radio, this.color, settings.objeto.animaPacMan);
-        } else if (this.velY == -1) {
-            canvasPacManUp(this.x, this.y, this.radio, this.color, settings.objeto.animaPacMan);
         }
 
+        // -----------------------------------------------------------------
+        if (settings.escala.x !== 1 || settings.escala.y !== 1) {
+            
+            this.escalaXY = this.escalar_pacmanDinamico(this.x, this.y);
+            x = this.escalaXY[0];
+            y = this.escalaXY[1];
+        }
+
+        canvasPacMan(x, y, this.radio, this.color);
+
+        if (this.velX == 1) {
+            canvasPacManRi(x, y, this.radio, this.color, settings.objeto.animaPacMan);
+
+        } else if (this.velX == -1) {
+            canvasPacManLe(x, y, this.radio, this.color, settings.objeto.animaPacMan);
+
+        } else if (this.velY == 1) {
+            canvasPacManDo(x, y, this.radio, this.color, settings.objeto.animaPacMan);
+
+        } else if (this.velY == -1) {
+            canvasPacManUp(x, y, this.radio, this.color, settings.objeto.animaPacMan);
+        }
+    }
+
+    escalar_pacmanDinamico(x, y) {
+
+        return [Math.floor(x / settings.escala.x), Math.floor(y / settings.escala.y)];
     }
 
     valoresIniciales() {
         this.x = 9 * settings.constante.bsx;
         this.velX = 1;
+    }
+
+    tapar_escapatorias() {
+
+        let x1 = -1 * settings.constante.bsx;
+        let y1 = 11 * settings.constante.bsy;
+        
+        let x2 = 19 * settings.constante.bsx;
+        let y2 = 11 * settings.constante.bsy;
+
+        settings.ctx.fillStyle = settings.colores.sueloColor;
+
+        if (settings.escala.x === 1 && settings.escala.y === 1) {
+
+            settings.ctx.fillRect(x1, y1, settings.constante.bsx, settings.constante.bsy);
+            settings.ctx.fillRect(x2, y2, settings.constante.bsx, settings.constante.bsy);
+            
+        } else {
+
+            let escalar1 = escalar_objetos(x1, y1);
+            let escalar2 = escalar_objetos(x2, y2);
+
+            settings.ctx.fillRect(escalar1[0], escalar1[1], settings.constante.bsx + 2, settings.constante.bsy + 2);
+            settings.ctx.fillRect(escalar2[0], escalar2[1], settings.constante.bsx + 2, settings.constante.bsy + 2);
+        }
     }
 }
 

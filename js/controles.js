@@ -1,5 +1,5 @@
 import { settings } from './main.js';
-import { playSonidos, playSonidosLoop } from './functions.js';
+import { nuevaPartida, playSonidos, playSonidosLoop } from './functions.js';
 
 // ----------------------------------------------------------------------------
 function reset_teclasCursor() {
@@ -40,10 +40,12 @@ let eventos_keydown = document.addEventListener('keydown', (ev) => {
         if (settings.estado.actual == -1) {
             settings.estado.actual = 0;
             settings.marcadores.botonNewGame.style.display = 'none';
+            settings.objeto.pacman.y = 4 * settings.constante.bsy;
             playSonidos(settings.sonidos.preparado);
             settings.objeto.pacman.valoresIniciales();
     
             setTimeout(() => {
+
                 if (settings.estado.actual == 0) settings.estado.actual = 1;
                 playSonidosLoop(settings.sonidos.sirena_fondo, true, 0.1);
             }, settings.constante.pausa_preparado);
@@ -54,6 +56,7 @@ let eventos_keydown = document.addEventListener('keydown', (ev) => {
             nuevaPartida();
     
             setTimeout(() => {
+
                 settings.estado.actual = 1;
                 playSonidosLoop(settings.sonidos.sirena_fondo, true, 0.1);
             }, settings.constante.pausa_preparado);
@@ -72,10 +75,12 @@ let eventos_click = document.addEventListener('click', (event) => {
         if (settings.estado.actual === -1) {
             settings.estado.actual = 0;
             settings.marcadores.botonNewGame.style.display = 'none';
+            settings.objeto.pacman.y = 4 * settings.constante.bsy;
             playSonidos(settings.sonidos.preparado);
             settings.objeto.pacman.valoresIniciales();
 
             setTimeout(() => {
+
                 if (settings.estado.actual == 0) settings.estado.actual = 1;
                 playSonidosLoop(settings.sonidos.sirena_fondo, true, 0.1);
             }, settings.constante.pausa_preparado);
@@ -87,6 +92,7 @@ let eventos_click = document.addEventListener('click', (event) => {
             nuevaPartida();
 
             setTimeout(() => {
+
                 settings.estado.actual = 1;
                 playSonidosLoop(settings.sonidos.sirena_fondo, true, 0.1);
             }, settings.constante.pausa_preparado);
@@ -111,41 +117,8 @@ let eventos_click = document.addEventListener('click', (event) => {
     } 
 });
 
-// ----------------------------------------------------------------------------
-//  Evento Change (Selector Zoom)
-// ----------------------------------------------------------------------------
-let eventos_change = document.addEventListener('change', (event) => {
-
-    console.log(event);
-    const opcion_elegida = event.target.selectedIndex;
-
-    if (event.target.id === 'selector__zoom') {
-
-        if (opcion_elegida === 1) {
-            settings.escala.x /= 2;
-            settings.escala.y /= 2;
-            settings.ctx.scale(settings.escala.x, settings.escala.y);
-        }
-
-        if (opcion_elegida === 2) {
-            settings.escala.x /= 1;
-            settings.escala.y /= 1;
-            settings.ctx.scale(settings.escala.x, settings.escala.y);
-            //settings.ctx.scale(2, 2);
-        }
-
-        if (opcion_elegida === 3) {
-            settings.escala.x *= 2;
-            settings.escala.y *= 2;
-            settings.ctx.scale(settings.escala.x, settings.escala.y);
-            //settings.ctx.scale(4, 4);
-        }
-    }
-});
-
 export {
     eventos_click,
-    eventos_keydown,
-    eventos_change
+    eventos_keydown
 };
 
