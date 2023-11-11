@@ -8,7 +8,7 @@ function dibujarFantasmas() {
     for (let i = 0; i < settings.constante.nro_fantasmas; i ++) {
         let corr = 9;
 
-        if (checkColision(settings.objeto.fantasma[i], settings.objeto.pacman, corr) && settings.estado.actual == 9) {
+        if (checkColision(settings.objeto.fantasma[i], settings.objeto.pacman, corr) && settings.estado.actual == 1) {
 
             if (!settings.estadoFantasmas.azules) {
 
@@ -78,13 +78,14 @@ function dibujaTodosPuntitos() {
         let corr = 0;
 
         if (settings.objeto.array_puntitos[i].visible && settings.estado.actual != 3) {
-            /* if (checkColision(settings.objeto.array_puntitos[i], settings.objeto.pacman, corr)) {
+
+            if (checkColision(settings.objeto.array_puntitos[i], settings.objeto.pacman, corr)) {
                 settings.objeto.array_puntitos[i].visible = false;
                 settings.objeto.contPuntitosComidos ++;
                 settings.marcadores.puntos += settings.objeto.array_puntitos[i].sumaPtos
                 settings.marcadores.scorePtos.innerHTML = `Puntos: ${settings.marcadores.puntos}`;
                 playSonidos(settings.sonidos.wakawaka);
-            } */
+            }
 
             settings.objeto.array_puntitos[i].dibuja();
         }
@@ -92,10 +93,10 @@ function dibujaTodosPuntitos() {
         if (i < 4) {
             if (settings.objeto.array_ptosGordos[i].visible && settings.estado.actual != 3) {
 
-                /* if (checkColision(settings.objeto.array_ptosGordos[i], settings.objeto.pacman, corr)) {
-                    settings.objeto.ptoGordo[i].visible = false;
+                if (checkColision(settings.objeto.array_ptosGordos[i], settings.objeto.pacman, corr)) {
+                    settings.array_ptosGordos[i].visible = false;
                     settings.objeto.contPuntitosComidos ++;
-                    settings.marcadores.puntos += objeto.ptoGordo[i].sumaPtos
+                    settings.marcadores.puntos += objeto.array_ptosGordos[i].sumaPtos
                     settings.estadoFantasmas.azules = true;
                     playSonidos(settings.sonidos.eating_ghost);
                     playSonidos(settings.sonidos.azules);
@@ -116,11 +117,37 @@ function dibujaTodosPuntitos() {
                     setTimeout(() => {
                         settings.estadoFantasmas.intermitentes = true;
                     }, Math.floor(settings.estadoFantasmas.duracionAzules / 1.6));
-                } */
+                }
 
                 settings.objeto.array_ptosGordos[i].dibuja();
             }
         }
+    }
+}
+
+// --------------------------------------------------------------------------
+function checkComerFruta() {
+    let corr = 5;
+
+    if (checkColision(settings.objeto.fruta, settings.objeto.pacman, corr) && settings.estado.actual == 1 && !settings.objeto.fruta.comido) {
+        settings.objeto.fruta.comido = true;
+        settings.objeto.fruta.showPtos = true;
+        settings.objeto.fruta.showX = settings.objeto.fruta.x 
+        settings.objeto.fruta.showY = settings.objeto.fruta.y
+        playSonidos(settings.sonidos.eating_cherry);
+
+        settings.marcadores.puntos += settings.estadoFantasmas.ptosComeFruta;
+
+        setTimeout(() => {
+            settings.objeto.fruta.showPtos = false;
+
+            setTimeout(() => {
+                settings.objeto.fruta.comido = false
+                settings.objeto.fruta.x = 9 * settings.constante.bsx;
+                settings.objeto.fruta.y = 11 * settings.constante.bsy;
+            }, 9000);
+
+        }, 3000);
     }
 }
 
@@ -153,7 +180,7 @@ function checkColision(obj1, obj2, corr) {
 function comprobarNivelSuperado() {
     let puntitosMasGordos = settings.objeto.array_puntitos.length + settings.objeto.array_ptosGordos.length;
 
-    if (objeto.contPuntitosComidos >= puntitosMasGordos) {
+    if (settings.objeto.contPuntitosComidos >= puntitosMasGordos) {
         return true;
     } else {
         return false;
@@ -162,36 +189,36 @@ function comprobarNivelSuperado() {
 
 // --------------------------------------------------------------------------
 function elNivelSuperado() {
-    if (!estado.nivel_superado) return;
+    if (!settings.estado.nivel_superado) return;
 
-    marcadores.nivel ++;
-    marcadores.scoreNivel.innerHTML = `Nivel: ${marcadores.nivel}`;
-    estadoFantasmas.ptosComeFruta *= 2;
-    objeto.fruta.comido = false;
-    estadoFantasmas.duracionAzules -= marcadores.nivel * 1000;
-    estado.nivel_superado = false;
-    objeto.contPuntitosComidos = 0;
-    estado.actual = 3;
-    sonidos.presentacion.play();
+    settings.marcadores.nivel ++;
+    settings.marcadores.scoreNivel.innerHTML = `Nivel: ${settings.marcadores.nivel}`;
+    settings.estadoFantasmas.ptosComeFruta *= 2;
+    settings.objeto.fruta.comido = false;
+    settings.estadoFantasmas.duracionAzules -= settings.marcadores.nivel * 1000;
+    settings.estado.nivel_superado = false;
+    settings.objeto.contPuntitosComidos = 0;
+    settings.estado.actual = 3;
+    settings.sonidos.presentacion.play();
 
-    if (estadoFantasmas.duracionAzules < 2000) estadoFantasmas.duracionAzules = 2000;
+    if (settings.estadoFantasmas.duracionAzules < 2000) settings.estadoFantasmas.duracionAzules = 2000;
 
-    objeto.puntito.forEach(punto => {
+    settings.objeto.puntito.forEach(punto => {
         punto.visible = true;
     });
 
-    objeto.ptoGordo.forEach(gordo => {
+    settings.objeto.ptoGordo.forEach(gordo => {
         gordo.visible = true;
     });
 
     setTimeout(() => {
-        estado.actual = 1;
-        objeto.pacman.revivirPacMan();
+        settings.estado.actual = 1;
+        settings.objeto.pacman.revivirPacMan();
 
-        objeto.fantasma[0].revivirFantasmas(3, 8, 0, 0);
-        objeto.fantasma[1].revivirFantasmas(5, 8, 1, 0);
-        objeto.fantasma[2].revivirFantasmas(9, 8, 2, 1);
-        objeto.fantasma[3].revivirFantasmas(11, 8, 3, 1);
+        settings.objeto.fantasma[0].revivirFantasmas(3, 8, 0, 0);
+        settings.objeto.fantasma[1].revivirFantasmas(5, 8, 1, 0);
+        settings.objeto.fantasma[2].revivirFantasmas(9, 8, 2, 1);
+        settings.objeto.fantasma[3].revivirFantasmas(11, 8, 3, 1);
     }, 5000);
 }
 
@@ -268,7 +295,11 @@ function borraCanvas() {
 export {
     dibujarFantasmas,
     dibujaTodosPuntitos,
+    checkComerFruta,
     escalar_objetos,
+    comprobarNivelSuperado,
+    elNivelSuperado,
+    mostrarMarcadores,
     borraCanvas,
     playSonidos,
     playSonidosLoop

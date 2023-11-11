@@ -114,7 +114,6 @@ export class Fantasma {
         let x = this.x;
         let y = this.y;
 
-        
         let iz = 0;
         let de = 0;
         let vert = 0;
@@ -172,6 +171,7 @@ export class Fantasma {
     }
 
     fantasma_persigue() {
+
         let hor_ver = Math.floor(Math.random()*10);
 
         if (hor_ver < 5) {
@@ -191,6 +191,7 @@ export class Fantasma {
     }
 
     revivirFantasmas(x, y, tipoFantasma, direccion) {
+
         this.tipoF = tipoFantasma;
         this.direccion = direccion;
 
@@ -204,6 +205,7 @@ export class Fantasma {
     }
 
     secuenciaPresentacion() {
+        
         let iz = 0;
         let de = 0;
         let vert = 0;

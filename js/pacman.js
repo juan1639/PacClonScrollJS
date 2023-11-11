@@ -1,12 +1,12 @@
 import { settings } from './main.js';
 
-/* import {
+import {
     canvasPacMan, 
     canvasPacManDo, 
     canvasPacManUp,
     canvasPacManLe, 
     canvasPacManRi
-} from '../canvasDraw/dibujaCanvas.js'; */
+} from './dibujaCanvas.js';
 
 // ============================================================================
 export class PacMan {
@@ -42,7 +42,10 @@ export class PacMan {
         this.sumarAlto = 0;
     }
 
-    dibuja(animaPacMan) {
+    dibuja() {
+
+        let x = this.x;
+        let y = this.y;
 
         /* if (settings.estado.actual == 2) {
             this.pacManDies(animaPacMan);
@@ -54,32 +57,26 @@ export class PacMan {
         // ----------------------------------------------------------
         if (settings.escala.x === 1 && settings.escala.y === 1) {
 
-            const corr = 0;
-            const r = this.radio;
-
-            settings.ctx.beginPath();
-            //settings.ctx.arc(x + r + corr, y + r + corr, r, 0, Math.PI * 2);
-            settings.ctx.arc(this.x + r + corr, this.y + r + corr, r, 0, Math.PI * 2);
-            settings.ctx.fillStyle = this.color;
-            settings.ctx.fill();
-            settings.ctx.closePath();
+            // Dibuja normal ...
 
         } else {
 
             this.escalaXY = this.dibuja_escala();
+            x = this.escalaXY[0];
+            y = this.escalaXY[1];
         }
-        
-        /* canvasPacMan(this.x, this.y, this.radio, this.color);
+
+        canvasPacMan(x, y, this.radio, this.color);
 
         if (this.velX == 1) {
-            canvasPacManRi(this.x, this.y, this.radio, this.color, animaPacMan);
+            canvasPacManRi(x, y, this.radio, this.color, settings.objeto.animaPacMan);
         } else if (this.velX == -1) {
-            canvasPacManLe(this.x, this.y, this.radio, this.color, animaPacMan);
+            canvasPacManLe(x, y, this.radio, this.color, settings.objeto.animaPacMan);
         } else if (this.velY == 1) {
-            canvasPacManDo(this.x, this.y, this.radio, this.color, animaPacMan);
+            canvasPacManDo(x, y, this.radio, this.color, settings.objeto.animaPacMan);
         } else if (this.velY == -1) {
-            canvasPacManUp(this.x, this.y, this.radio, this.color, animaPacMan);
-        } */
+            canvasPacManUp(x, y, this.radio, this.color, settings.objeto.animaPacMan);
+        }
 
         // ctx.drawImage(pacmanImg, 0, 0, pacmanImg.width - 1, pacmanImg.height - 1, 
         //     this.x, this.y, this.ancho, this.alto);
@@ -89,21 +86,6 @@ export class PacMan {
 
         const x = Math.floor(settings.resolucion[0] / 4);
         const y = Math.floor(settings.resolucion[1] / 4);
-
-        /* const resX = settings.resolucion[0];
-        const resY = settings.resolucion[1];
-        const x = Math.floor(this.x - resX / 2);
-        const y = Math.floor(this.y - resY / 2); */
-
-        const corr = 0;
-        const r = this.radio;
-
-        settings.ctx.beginPath();
-        //settings.ctx.arc(x + r + corr, y + r + corr, r, 0, Math.PI * 2);
-        settings.ctx.arc(x + corr, y + corr, r, 0, Math.PI * 2);
-        settings.ctx.fillStyle = this.color;
-        settings.ctx.fill();
-        settings.ctx.closePath();
 
         return [x - this.radio, y - this.radio];
     }
@@ -155,7 +137,7 @@ export class PacMan {
     }
 
     pacManDies(animaPacMan) {
-        canvasPacMan(this.x, this.y, this.radio, this.color);
+        /* canvasPacMan(this.x, this.y, this.radio, this.color);
 
         if (this.diesAnima == 0) {
             canvasPacManRi(this.x, this.y, this.radio, this.color, animaPacMan);
@@ -165,12 +147,12 @@ export class PacMan {
             canvasPacManDo(this.x, this.y, this.radio, this.color, animaPacMan);
         } else if (this.diesAnima == 3) {
             canvasPacManUp(this.x, this.y, this.radio, this.color, animaPacMan);
-        }
+        } */
     }
 
     revivirPacMan() {
-        this.x = 9 * constante.bsx;
-        this.y = 4 * constante.bsy;
+        this.x = 9 * settings.constante.bsx;
+        this.y = 4 * settings.constante.bsy;
         this.pulsada = 'ri';
         this.velX = 1;
         this.velY = 0;
@@ -179,6 +161,7 @@ export class PacMan {
     }
 
     secuenciaPresentacion(animaPacMan) {
+
         this.x = this.x + this.velX;
 
         if ((this.x > resolucion[0] && this.velX > 0) || (this.x < -99 && this.velX < 0)) 
@@ -199,7 +182,7 @@ export class PacMan {
     }
 
     valoresIniciales() {
-        this.x = 9 * constante.bsx;
+        this.x = 9 * settings.constante.bsx;
         this.velX = 1;
     }
 }

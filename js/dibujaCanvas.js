@@ -6,33 +6,34 @@ import { settings } from './main.js';
 function canvasPacMan(x, y, r, pacColor) {
     let corr = 2;
 
-    const gradi = ctx.createRadialGradient(x + r, y + r, 10, x + r, y + r, r);
+    const gradi = settings.ctx.createRadialGradient(x + r, y + r, 10, x + r, y + r, r);
     gradi.addColorStop(0, '#FA1');
     gradi.addColorStop(1, '#FE1');
 
-    ctx.beginPath();
-    ctx.arc(x + r + corr, y + r + corr, r, 0, Math.PI * 2);
-    ctx.fillStyle = gradi;
-    ctx.fill();
-    ctx.closePath();
+    settings.ctx.beginPath();
+    settings.ctx.arc(x + r + corr, y + r + corr, r, 0, Math.PI * 2);
+    settings.ctx.fillStyle = gradi;
+    settings.ctx.fill();
+    settings.ctx.closePath();
 }
 
 function canvasPacManRi(x, y, r, pacColor, animaPacMan) {
     let corr = 2;
 
     if (!animaPacMan) {
+
         for (let i = 0; i < 10; i ++) {
-            ctx.fillStyle = colores.sueloColor;
-            ctx.fillRect(x + r + corr + i * 2, y + r + corr + i, parseInt(constante.bsx / 2) - i * 2, 1);
-            ctx.fillRect(x + r + corr + i * 2, y + r + corr - i, parseInt(constante.bsx / 2) - i * 2, 1);
+            settings.ctx.fillStyle = settings.colores.sueloColor;
+            settings.ctx.fillRect(x + r + corr + i * 2, y + r + corr + i, parseInt(settings.constante.bsx / 2) - i * 2, 1);
+            settings.ctx.fillRect(x + r + corr + i * 2, y + r + corr - i, parseInt(settings.constante.bsx / 2) - i * 2, 1);
         }
 
     } else {
 
         for (let i = 0; i < 18; i ++) {
-            ctx.fillStyle = colores.sueloColor;
-            ctx.fillRect(x + r + corr + i, y + r + corr + i, parseInt(constante.bsx / 2) - i, 1);
-            ctx.fillRect(x + r + corr + i, y + r + corr - i, parseInt(constante.bsx / 2) - i, 1);
+            settings.ctx.fillStyle = settings.colores.sueloColor;
+            settings.ctx.fillRect(x + r + corr + i, y + r + corr + i, parseInt(settings.constante.bsx / 2) - i, 1);
+            settings.ctx.fillRect(x + r + corr + i, y + r + corr - i, parseInt(settings.constante.bsx / 2) - i, 1);
         }
     }
 }
@@ -41,18 +42,19 @@ function canvasPacManLe(x, y, r, pacColor, animaPacMan) {
     let corr = 2;
 
     if (!animaPacMan) {
+
         for (let i = 0; i < 10; i ++) {
-            ctx.fillStyle = colores.sueloColor;
-            ctx.fillRect(x + r + corr - i * 2, y + r + corr + i, -(parseInt(constante.bsx / 2) - i * 2), 1);
-            ctx.fillRect(x + r + corr - i * 2, y + r + corr - i, -(parseInt(constante.bsx / 2) - i * 2), 1);
+            settings.ctx.fillStyle = settings.colores.sueloColor;
+            settings.ctx.fillRect(x + r + corr - i * 2, y + r + corr + i, -(parseInt(settings.constante.bsx / 2) - i * 2), 1);
+            settings.ctx.fillRect(x + r + corr - i * 2, y + r + corr - i, -(parseInt(settings.constante.bsx / 2) - i * 2), 1);
         }
 
     } else {
 
         for (let i = 0; i < 18; i ++) {
-            ctx.fillStyle = colores.sueloColor;
-            ctx.fillRect(x + r + corr - i, y + r + corr + i, -(parseInt(constante.bsx / 2) - i), 1);
-            ctx.fillRect(x + r + corr - i, y + r + corr - i, -(parseInt(constante.bsx / 2) - i), 1);
+            settings.ctx.fillStyle = settings.colores.sueloColor;
+            settings.ctx.fillRect(x + r + corr - i, y + r + corr + i, -(parseInt(settings.constante.bsx / 2) - i), 1);
+            settings.ctx.fillRect(x + r + corr - i, y + r + corr - i, -(parseInt(settings.constante.bsx / 2) - i), 1);
         }
     }
 }
@@ -61,18 +63,19 @@ function canvasPacManDo(x, y, r, pacColor, animaPacMan) {
     let corr = 2;
 
     if (!animaPacMan) {
+        
         for (let i = 0; i < 10; i ++) {
-            ctx.fillStyle = colores.sueloColor;
-            ctx.fillRect(x + r + corr + i, y + r + corr + i * 2, 1, parseInt(constante.bsx / 2) - i * 2);
-            ctx.fillRect(x + r + corr - i, y + r + corr + i * 2, 1, parseInt(constante.bsx / 2) - i * 2);
+            settings.ctx.fillStyle = settings.colores.sueloColor;
+            settings.ctx.fillRect(x + r + corr + i, y + r + corr + i * 2, 1, parseInt(settings.constante.bsx / 2) - i * 2);
+            settings.ctx.fillRect(x + r + corr - i, y + r + corr + i * 2, 1, parseInt(settings.constante.bsx / 2) - i * 2);
         }
 
     } else {
 
         for (let i = 0; i < 18; i ++) {
-            ctx.fillStyle = colores.sueloColor;
-            ctx.fillRect(x + r + corr + i, y + r + corr + i, 1, parseInt(constante.bsx / 2) - i);
-            ctx.fillRect(x + r + corr - i, y + r + corr + i, 1, parseInt(constante.bsx / 2) - i);
+            settings.ctx.fillStyle = settings.colores.sueloColor;
+            settings.ctx.fillRect(x + r + corr + i, y + r + corr + i, 1, parseInt(settings.constante.bsx / 2) - i);
+            settings.ctx.fillRect(x + r + corr - i, y + r + corr + i, 1, parseInt(settings.constante.bsx / 2) - i);
         }
     }
     
@@ -82,18 +85,19 @@ function canvasPacManUp(x, y, r, pacColor, animaPacMan) {
     let corr = 2;
 
     if (!animaPacMan) {
+
         for (let i = 0; i < 10; i ++) {
-            ctx.fillStyle = colores.sueloColor;
-            ctx.fillRect(x + r + corr + i, y + r + corr - i * 2, 1, -(parseInt(constante.bsx / 2) - i * 2));
-            ctx.fillRect(x + r + corr - i, y + r + corr - i * 2, 1, -(parseInt(constante.bsx / 2) - i * 2));
+            settings.ctx.fillStyle = settings.colores.sueloColor;
+            settings.ctx.fillRect(x + r + corr + i, y + r + corr - i * 2, 1, -(parseInt(settings.constante.bsx / 2) - i * 2));
+            settings.ctx.fillRect(x + r + corr - i, y + r + corr - i * 2, 1, -(parseInt(settings.constante.bsx / 2) - i * 2));
         }
 
     } else {
 
         for (let i = 0; i < 18; i ++) {
-            ctx.fillStyle = colores.sueloColor;
-            ctx.fillRect(x + r + corr + i, y + r + corr - i, 1, -(parseInt(constante.bsx / 2) - i));
-            ctx.fillRect(x + r + corr - i, y + r + corr - i, 1, -(parseInt(constante.bsx / 2) - i));
+            settings.ctx.fillStyle = settings.colores.sueloColor;
+            settings.ctx.fillRect(x + r + corr + i, y + r + corr - i, 1, -(parseInt(settings.constante.bsx / 2) - i));
+            settings.ctx.fillRect(x + r + corr - i, y + r + corr - i, 1, -(parseInt(settings.constante.bsx / 2) - i));
         }
     }
 }
@@ -164,13 +168,13 @@ function canvasOjosFantasma(x, y, r, iz, de, vert) {
 }
 
 // ========================================================================
-function canvasFruta(x, y, r) {
+function canvasFruta(x, y, r, thisX, thisY) {
     let corr = 2;
     let radCerezas = 11;
 
-    const gradi = ctx.createRadialGradient(x + r + corr - 6, y + r + corr + 4, 3, x + r + corr - 6, 
-        y + r + corr + 4, r);
-    gradi.addColorStop(0, colores.rojo);
+    const gradi = settings.ctx.createRadialGradient(thisX + r + corr - 6, thisY + r + corr + 4, 3, thisX + r + corr - 6, 
+        thisY + r + corr + 4, r);
+    gradi.addColorStop(0, settings.colores.rojo);
     gradi.addColorStop(1, '#F52');
 
     settings.ctx.beginPath();
@@ -183,7 +187,7 @@ function canvasFruta(x, y, r) {
 
     settings.ctx.beginPath();
     settings.ctx.arc(x + r + corr + 3, y + r + corr + 4, radCerezas, 0, Math.PI * 2);
-    settings.ctx.fillStyle = colores.rojo;
+    settings.ctx.fillStyle = settings.colores.rojo;
     settings.ctx.fill();
     settings.ctx.closePath();
 
@@ -195,7 +199,7 @@ function canvasFruta(x, y, r) {
 
     settings.ctx.beginPath();
     settings.ctx.arc(x + r + corr - 6, y + r + corr + 4, radCerezas + 1, Math.PI * 1.5, Math.PI / 2);
-    settings.ctx.strokeStyle = colores.sueloColor;
+    settings.ctx.strokeStyle = settings.colores.sueloColor;
     settings.ctx.stroke();
     settings.ctx.closePath();
 }

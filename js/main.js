@@ -7,7 +7,7 @@
 import {Settings} from './settings.js';
 import {Laberinto} from './laberinto.js';
 import {Puntitos, PtosGordos} from './puntitos.js';
-//import {Fruta} from './fruta.js';
+import {Fruta} from './fruta.js';
 import {PacMan} from './pacman.js';
 import {Fantasma} from './fantasma.js';
 
@@ -25,7 +25,9 @@ import {
 import {
     borraCanvas,
     dibujaTodosPuntitos,
-    dibujarFantasmas
+    dibujarFantasmas,
+    elNivelSuperado,
+    comprobarNivelSuperado
 } from './functions.js';
 
 // ----------------------------------------------------------------------------
@@ -65,7 +67,6 @@ window.onload = () => {
         for (let x = 0; x < settings.array_laberinto[0].length; x ++) {
             
             if (settings.array_laberinto[y][x] == 1) {
-                //settings.objeto.puntito[contador] = new Puntitos(x, y);
                 instanciar = new Puntitos(x, y);
                 settings.objeto.array_puntitos.push(instanciar);
                 contador ++;
@@ -73,7 +74,6 @@ window.onload = () => {
             }
 
             if (settings.array_laberinto[y][x] == 5) {
-                //settings.objeto.ptoGordo[contador_gordos] = new PtosGordos(x, y);
                 instanciar = new PtosGordos(x, y);
                 settings.objeto.array_ptosGordos.push(instanciar);
                 contador_gordos ++;
@@ -82,7 +82,7 @@ window.onload = () => {
     }
 
     // INSTANCIAR FRUTA ----------------------------------------------
-    //objeto.fruta = new Fruta();
+    settings.objeto.fruta = new Fruta();
 
     // INSTANCIAR PAC-MAN --------------------------------------------
     settings.objeto.pacman = new PacMan();
@@ -93,32 +93,36 @@ window.onload = () => {
     settings.objeto.fantasma[2] = new Fantasma(9 * settings.constante.bsx, 8 * settings.constante.bsy, 2, 1);
     settings.objeto.fantasma[3] = new Fantasma(11 * settings.constante.bsx, 8 * settings.constante.bsy, 3, 1);
 
-    // --- Ejecutamos BUCLE PRINCIPAL (Intervalo cada 1000/FPS) ------
+    // --------------------------------------------------------------------------------
+    // Creamos BUCLE PRINCIPAL (Intervalo cada 1000/FPS)
+    // --------------------------------------------------------------------------------
     setInterval(function() {
         bucle_principal();
     }, 1000 / settings.constante.fps);
 
-    /* setInterval(function() {
-        if (objeto.animaPacMan) {
-            objeto.animaPacMan = false;
+    setInterval(function() {
+
+        if (settings.objeto.animaPacMan) {
+            settings.objeto.animaPacMan = false;
         } else {
-            objeto.animaPacMan = true;
+            settings.objeto.animaPacMan = true;
         }
-
-        objeto.pacman.diesAnima ++;
-        if (objeto.pacman.diesAnima > 3) objeto.pacman.diesAnima = 0;
         
-    }, 150); */
+        settings.objeto.pacman.diesAnima ++;
+        if (settings.objeto.pacman.diesAnima > 3) settings.objeto.pacman.diesAnima = 0;
+        
+    }, 150);
 
-    /* setInterval(function () {
-        if (estado.actual != 0) {
-            estado.nivel_superado = comprobarNivelSuperado();
+    setInterval(function() {
+
+        if (settings.estado.actual != 0) {
+            settings.estado.nivel_superado = comprobarNivelSuperado();
             // console.log(estado.nivel_superado, estadoFantasmas.duracionAzules);
         }
-    }, 200); */
+    }, 200);
 }
 
-// ========================================================================
+// ===============================================================================
 function bucle_principal() {
     borraCanvas();
 
@@ -127,14 +131,16 @@ function bucle_principal() {
     }
 
     if (settings.estado.actual != -1) {
+
         settings.objeto.laberinto.dibuja();
         dibujaTodosPuntitos();
-        //objeto.fruta.dibuja();
+        settings.objeto.fruta.dibuja();
+
         settings.objeto.pacman.dibuja();
         dibujarFantasmas();
 
         //checkComerFruta();
-        //elNivelSuperado();
+        elNivelSuperado();
         //elGameOver();
         //mostrarMarcadores();
     }
