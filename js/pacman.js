@@ -53,7 +53,9 @@ export class PacMan {
             return;
         }
 
-        if (settings.estado.actual === 1) this.actualiza();
+        if (settings.estado.actual === 1 && !settings.estado.pausa_fantasmaComido) {
+            this.actualiza();
+        }
 
         // ----------------------------------------------------------
         if (settings.escala.x === 1 && settings.escala.y === 1) {
@@ -260,6 +262,17 @@ export class PacMan {
             settings.ctx.fillRect(escalar1[0], escalar1[1], settings.constante.bsx + 2, settings.constante.bsy + 2);
             settings.ctx.fillRect(escalar2[0], escalar2[1], settings.constante.bsx + 2, settings.constante.bsy + 2);
         }
+    }
+
+    static dibuja_mapa(sizePixel, cX, cY) {
+
+        const x = Math.floor(cX / settings.constante.bsx);
+        const y = Math.floor(cY / settings.constante.bsy);
+
+        const pos_mapa = Math.floor(settings.resolucion[0] / settings.escala.x) - settings.constante.nro_columnas * sizePixel;
+
+        settings.ctx.fillStyle = 'rgb(255, 255, 150)';
+        settings.ctx.fillRect(x * sizePixel + pos_mapa, y * sizePixel, sizePixel, sizePixel);
     }
 }
 

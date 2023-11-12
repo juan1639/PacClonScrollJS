@@ -51,6 +51,7 @@ function dibujarFantasmas() {
                     playSonidos(settings.sonidos.eating_ghost);
                     settings.objeto.fantasma[i].comido = true;
                     settings.objeto.fantasma[i].showPtos = true;
+                    settings.estado.pausa_fantasmaComido = true;
 
                     if (settings.escala.x === 1 && settings.escala.y === 1) {
 
@@ -70,6 +71,10 @@ function dibujarFantasmas() {
                     setTimeout(() => {
                         settings.objeto.fantasma[i].showPtos = false;
                     }, 1200);
+
+                    setTimeout(() => {
+                        settings.estado.pausa_fantasmaComido = false;
+                    }, 500);
 
                 }
             }

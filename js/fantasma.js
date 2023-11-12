@@ -119,7 +119,9 @@ export class Fantasma {
         let vert = 0;
 
         // -----------------------------------------------------------------
-        if (settings.estado.actual == 1) this.actualiza();
+        if (settings.estado.actual === 1 && !settings.estado.pausa_fantasmaComido) {
+            this.actualiza();
+        }
         
         // -----------------------------------------------------------------
         if (settings.escala.x !== 1 || settings.escala.y !== 1) {
@@ -231,5 +233,23 @@ export class Fantasma {
         }
 
         canvasOjosFantasma(pacX + gap, pacY, this.radio, iz, de, vert);
+    }
+
+    static dibuja_mapa(sizePixel, cX, cY, tipoFantasma) {
+
+        const listaColores = [
+            ['pink', '#E7C'],
+            [settings.colores.rojo, '#F42'], 
+            ['orange', '#FC0'], 
+            ['seagreen', '#1B4']
+        ];
+
+        const x = Math.floor(cX / settings.constante.bsx);
+        const y = Math.floor(cY / settings.constante.bsy);
+
+        const pos_mapa = Math.floor(settings.resolucion[0] / settings.escala.x) - settings.constante.nro_columnas * sizePixel;
+
+        settings.ctx.fillStyle = listaColores[tipoFantasma][0];
+        settings.ctx.fillRect(x * sizePixel + pos_mapa, y * sizePixel, sizePixel, sizePixel);
     }
 }

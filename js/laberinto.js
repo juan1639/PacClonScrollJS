@@ -84,4 +84,35 @@ export class Laberinto {
             }
         }
     }
+
+    static dibuja_mapa(sizePixel) {
+
+        for (let y = 0; y < settings.constante.nro_filas; y ++) {
+            for (let x = 0; x < settings.constante.nro_columnas; x ++) {
+
+                if (settings.array_laberinto[y][x] === 9) {
+
+                    const pos_mapa = Math.floor(settings.resolucion[0] / settings.escala.x) - settings.constante.nro_columnas * sizePixel;
+
+                    settings.ctx.fillStyle = 'green';
+                    settings.ctx.fillRect(x * sizePixel + pos_mapa, y * sizePixel, sizePixel, sizePixel);
+                }
+            }
+        }
+    }
+
+    static calcula_sizeMapa() {
+
+        if (settings.escala.x === 4 && settings.escala.y === 4) {
+            return 3;
+
+        } else if (settings.escala.x === 3 && settings.escala.y === 3) {
+            return 4;
+
+        } else if (settings.escala.x === 2 && settings.escala.y === 2) {
+            return 6;
+        }
+
+        return 1;
+    }
 }

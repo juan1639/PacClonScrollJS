@@ -38,6 +38,7 @@ import {
 const escalas_validas = [1, 2, 3, 4];
 let escalaSel = 0;
 let settings;
+let sizePixel;
 
 // ================================================================================
 // Funcion Inicialiadora
@@ -57,6 +58,8 @@ window.onload = () => {
 
     // sonidos.presentacion.play();
     // sonidos.presentacion.volume = 0.6;
+
+    sizePixel = Laberinto.calcula_sizeMapa();
 
     // INSTANCIAR (Laberinto) ----------------------------------------
     settings.objeto.laberinto = new Laberinto(settings.array_laberinto);
@@ -141,6 +144,18 @@ function bucle_principal() {
 
         settings.objeto.pacman.dibuja();
         dibujarFantasmas();
+
+        Laberinto.dibuja_mapa(sizePixel);
+
+        if (settings.objeto.pacman) {
+            PacMan.dibuja_mapa(sizePixel, settings.objeto.pacman.x, settings.objeto.pacman.y);
+        }
+
+        for (let fantasma of settings.objeto.fantasma) {
+            if (fantasma) {
+                Fantasma.dibuja_mapa(sizePixel, fantasma.x, fantasma.y, fantasma.tipoF);
+            }
+        }
 
         checkComerFruta();
         elNivelSuperado();

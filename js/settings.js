@@ -82,7 +82,8 @@ export class Settings {
         this.estado = {
             actual: -1,
             gameover: false,
-            nivel_superado: false
+            nivel_superado: false,
+            pausa_fantasmaComido: false
         }
 
         this.estadoFantasmas = {
